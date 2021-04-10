@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.4.0/clipboard.min.js"
+    integrity="sha512-iJh0F10blr9SC3d0Ow1ZKHi9kt12NYa+ISlmCdlCdNZzFwjH1JppRTeAnypvUez01HroZhAmP4ro4AvZ/rG0UQ=="
+    crossorigin="anonymous"></script>
+
+  <style>
+    body {
+      background: #2193b0;
+      /* fallback for old browsers */
+      background: -webkit-linear-gradient(to right, #6dd5ed, #2193b0);
+      /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(to right, #6dd5ed, #2193b0);
+      /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+    }
+  </style>
+  <script>
+    $(document).ready(function () {
+
+      $("input").keyup(function () {
+
+        var riskPerTrade = $("#txtRiskPerTrade").val();
+        var stockPrice = $("#txtStockPrice").val();
+        var stoplossPrice = $("#txtStoploss").val();
+
+        var stopLossDifference = stockPrice - stoplossPrice;
+
+        if (isNaN(stopLossDifference)) {
+          stopLossDifference = 0;
+        } else {
+          if (stopLossDifference < 0) {
+            stopLossDifference = stopLossDifference * (-1);
+          }
+        }
+        stopLossDifference = stopLossDifference.toFixed(2)
+
+        $("#lblStocklossDiff").html(stopLossDifference);
+
+        var quantity = riskPerTrade / stopLossDifference;
+
+
+        if (isNaN(quantity) || !isFinite(quantity)) {
+          quantity = 0;
+        } else {
+          quantity = quantity.toFixed(2)
+        }
+        $("#lblQuantity").html(quantity);
+
+
+        if (parseFloat(stockPrice) > parseFloat(stoplossPrice)) {
+
+          // stopLossDifference = stockPrice - stoplossPrice;
+
+          console.log(`stopLossDifference`, stopLossDifference)
+          console.log(`stockPrice`, stockPrice)
+
+
+          target1 = parseFloat(stockPrice) + (parseFloat(stopLossDifference) * 2);
+          target2 = parseFloat(stockPrice) + (parseFloat(stopLossDifference) * 1.75);
+          target3 = parseFloat(stockPrice) + (parseFloat(stopLossDifference) * 1.5);
+          target4 = parseFloat(stockPrice) + (parseFloat(stopLossDifference) * 1.25);
+
+        } else {
+
+          //stopLossDifference = stockPrice - stoplossPrice;
+          console.log(`else stopLossDifference`, stopLossDifference)
+          console.log(`else stockPrice`, stockPrice)
+          target1 = (parseFloat(stockPrice) - (parseFloat(stopLossDifference) * 2));
+          target2 = (parseFloat(stockPrice) - (parseFloat(stopLossDifference) * 1.75));
+          target3 = (parseFloat(stockPrice) - (parseFloat(stopLossDifference) * 1.5));
+          target4 = (parseFloat(stockPrice) - (parseFloat(stopLossDifference) * 1.25));
+        }
+
+
+        $("#target1").html(target1.toFixed(2));
+        $("#target2").html(target2.toFixed(2));
+        $("#target3").html(target3
+          .toFixed(2));
+        $("#target4").html(target4.toFixed(2));
+
+        $("#profit1").html((riskPerTrade * 2).toFixed(2));
+        $("#profit2").html((riskPerTrade * 1.75).toFixed(
+          2));
+        $("#profit3").html((riskPerTrade * 1.5).toFixed(2));
+        $("#profit4").html((riskPerTrade * 1.25)
+          .toFixed(2));
+
+      });
+      $("#lblQuantity").click(function () {
+
+        var copyTextarea = document.getElementById("lblQuantity");
+        copyTextarea.select(); //select the text area
+        document.execCommand("copy");
+        console.log(copyTextarea);
+      });
+
+    });
+  </script>
+</head>
+
+<body>
+  <div class="d-flex p-2">
+    <div class="container align-middle">
+      <div class="row">
+        <div class="col-md-3">
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              Stock Quantity Calculator
+            </div>
+            <div class="card-body">
+              <div class="m-3 row">
+                <label for="inputPassword" class="col-sm-4 col-form-label">Risk / Trade</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="txtRiskPerTrade">
+                </div>
+              </div>
+              <div class="m-3 row">
+                <label for="inputStopLoss" class="col-sm-4 col-form-label">Stock Price</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="txtStockPrice">
+                </div>
+              </div>
+              <div class="m-3 row">
+                <label for="inputTarget" class="col-sm-4 col-form-label">Stoploss Price</label>
+                <div class="col-sm-8">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <input type="text" class="form-control" id="txtStoploss">
+                    </div>
+                    <div class="col-md-6">
+                      <label for="inputStopLoss" class="col-sm-12 col-form-label" id="lblStocklossDiff"></label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="m-3 row">
+                <button type="button" class="btn btn-warning display-1" style="min-height: 75px;">
+                  <h4 class="display-5" id="lblQuantity">0</h4>
+                </button>
+              </div>
+              <div class="m-3 row">
+                <table class="table table-striped table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">Reward Ratio</th>
+                      <th scope="col">Target</th>
+                      <th scope="col">Profit</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>2x</td>
+                      <td id="target1"></td>
+                      <td><span id="profit1"></span></td>
+                    </tr>
+                    <tr>
+                      <td>1.75x</td>
+                      <td id="target2"></td>
+                      <td><span id="profit2"></span></td>
+                    </tr>
+                    <tr>
+                      <td>1.5x</td>
+                      <td id="target3"></td>
+                      <td><span id="profit3"></span></td>
+                    </tr>
+                    <tr>
+                      <td>1.25x</td>
+                      <td id="target4"></td>
+                      <td><span id="profit4"></span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Optional JavaScript; choose one of the two! -->
+
+      <!-- Option 1: Bootstrap Bundle with Popper -->
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous">
+      </script>
+
+      <!-- Option 2: Separate Popper and Bootstrap JS -->
+      <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
+    -->
+
+
+    </div>
+  </div>
+</body>
+
+</html>
