@@ -11,24 +11,45 @@
     integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.4.0/clipboard.min.js"
-    integrity="sha512-iJh0F10blr9SC3d0Ow1ZKHi9kt12NYa+ISlmCdlCdNZzFwjH1JppRTeAnypvUez01HroZhAmP4ro4AvZ/rG0UQ=="
-    crossorigin="anonymous"></script>
-
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+    integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+  <script src="https://unpkg.com/@popperjs/core@2"></script>
+  <script src="https://unpkg.com/tippy.js@6"></script>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@300&display=swap" rel="stylesheet">
   <style>
     body {
-      background: #2193b0;
-      /* fallback for old browsers */
-      background: -webkit-linear-gradient(to right, #6dd5ed, #2193b0);
-      /* Chrome 10-25, Safari 5.1-6 */
-      background: linear-gradient(to right, #6dd5ed, #2193b0);
-      /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
-
+      background: #150e56;
+      font-family: 'Montserrat Alternates', sans-serif;
+      font-size: medium;
+      font-weight: bold;
     }
   </style>
   <script>
     $(document).ready(function () {
+      $("#btnQuantity").click(function (ev) {
+        copyToClipboard('#lblQuantity');
+        tippy('#btnQuantity', {
+          content: 'Quantity Copied!',
+          trigger: 'click',
+          placement: 'top-end',
+          followCursor: true,
+          onShow(instance) {
+            setTimeout(() => {
+              instance.hide();
+            }, 1000);
+          }
+        });
+      });
+
+      function copyToClipboard(element) {
+        var $temp = $("<input>");
+        $("body").append($temp);
+        $temp.val($(element).html()).select();
+        document.execCommand("copy");
+        $temp.remove();
+      }
 
       $("input").keyup(function () {
 
@@ -62,26 +83,34 @@
 
         if (parseFloat(stockPrice) > parseFloat(stoplossPrice)) {
 
-          // stopLossDifference = stockPrice - stoplossPrice;
-
-          console.log(`stopLossDifference`, stopLossDifference)
-          console.log(`stockPrice`, stockPrice)
-
 
           target1 = parseFloat(stockPrice) + (parseFloat(stopLossDifference) * 2);
           target2 = parseFloat(stockPrice) + (parseFloat(stopLossDifference) * 1.75);
           target3 = parseFloat(stockPrice) + (parseFloat(stopLossDifference) * 1.5);
           target4 = parseFloat(stockPrice) + (parseFloat(stopLossDifference) * 1.25);
 
+          if (quantity > 0) {
+            $(".rrRow1").css("background-color", "#38b000");
+            $(".rrRow2").css("background-color", "#70e000");
+            $(".rrRow3").css("background-color", "#9ef01a");
+            $(".rrRow4").css("background-color", "#ccff33");
+          }
+
         } else {
 
-          //stopLossDifference = stockPrice - stoplossPrice;
-          console.log(`else stopLossDifference`, stopLossDifference)
-          console.log(`else stockPrice`, stockPrice)
+
           target1 = (parseFloat(stockPrice) - (parseFloat(stopLossDifference) * 2));
           target2 = (parseFloat(stockPrice) - (parseFloat(stopLossDifference) * 1.75));
           target3 = (parseFloat(stockPrice) - (parseFloat(stopLossDifference) * 1.5));
           target4 = (parseFloat(stockPrice) - (parseFloat(stopLossDifference) * 1.25));
+
+          if (quantity > 0) {
+            $(".rrRow1").css("background-color", "#ff0000");
+            $(".rrRow2").css("background-color", "#ff5252");
+            $(".rrRow3").css("background-color", "#ff7b7b");
+            $(".rrRow4").css("background-color", "#ffbaba");
+          }
+
         }
 
 
@@ -99,13 +128,7 @@
           .toFixed(2));
 
       });
-      $("#lblQuantity").click(function () {
 
-        var copyTextarea = document.getElementById("lblQuantity");
-        copyTextarea.select(); //select the text area
-        document.execCommand("copy");
-        console.log(copyTextarea);
-      });
 
     });
   </script>
@@ -120,19 +143,21 @@
         <div class="col-md-6">
           <div class="card">
             <div class="card-header">
+              <i class="fas fa-calculator"></i>
               Stock Quantity Calculator
             </div>
             <div class="card-body">
               <div class="m-3 row">
                 <label for="inputPassword" class="col-sm-4 col-form-label">Risk / Trade</label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" id="txtRiskPerTrade">
+                  <input type="number" class="form-control" id="txtRiskPerTrade"
+                    placeholder="How much risk you can take?">
                 </div>
               </div>
               <div class="m-3 row">
                 <label for="inputStopLoss" class="col-sm-4 col-form-label">Stock Price</label>
                 <div class="col-sm-8">
-                  <input type="text" class="form-control" id="txtStockPrice">
+                  <input type="number" class="form-control" id="txtStockPrice" placeholder="Buy / Sell stock price">
                 </div>
               </div>
               <div class="m-3 row">
@@ -140,7 +165,7 @@
                 <div class="col-sm-8">
                   <div class="row">
                     <div class="col-md-6">
-                      <input type="text" class="form-control" id="txtStoploss">
+                      <input type="number" class="form-control" id="txtStoploss" placeholder="Stoploss?">
                     </div>
                     <div class="col-md-6">
                       <label for="inputStopLoss" class="col-sm-12 col-form-label" id="lblStocklossDiff"></label>
@@ -149,7 +174,8 @@
                 </div>
               </div>
               <div class="m-3 row">
-                <button type="button" class="btn btn-warning display-1" style="min-height: 75px;">
+
+                <button type="button" id="btnQuantity" class="btn btn-warning display-1" style="min-height: 75px;">
                   <h4 class="display-5" id="lblQuantity">0</h4>
                 </button>
               </div>
@@ -163,22 +189,22 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
+                    <tr class="rrRow1">
                       <td>2x</td>
                       <td id="target1"></td>
                       <td><span id="profit1"></span></td>
                     </tr>
-                    <tr>
+                    <tr class="rrRow2">
                       <td>1.75x</td>
                       <td id="target2"></td>
                       <td><span id="profit2"></span></td>
                     </tr>
-                    <tr>
+                    <tr class="rrRow3">
                       <td>1.5x</td>
                       <td id="target3"></td>
                       <td><span id="profit3"></span></td>
                     </tr>
-                    <tr>
+                    <tr class="rrRow4">
                       <td>1.25x</td>
                       <td id="target4"></td>
                       <td><span id="profit4"></span></td>
