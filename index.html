@@ -127,9 +127,20 @@
         $("#profit4").html((riskPerTrade * 1.25)
           .toFixed(2));
 
+        var funds = parseFloat(quantity) * parseFloat(stockPrice);
+
+        var INRformat = new Intl.NumberFormat('en-IN', {
+          style: 'currency',
+          currency: 'INR',
+          minimumFractionDigits: 2,
+        });
+
+        if (quantity > 0) {
+          $("#lblFunds").html(INRformat.format(funds));
+        } else {
+          $("#lblFunds").html(INRformat.format(0));
+        }
       });
-
-
     });
   </script>
 </head>
@@ -174,7 +185,13 @@
                 </div>
               </div>
               <div class="m-3 row">
+                <label for="inputStopLoss" class="col-sm-4 col-form-label">Funds / Trade</label>
+                <div class="col-sm-8">
+                  <label for="inputStopLoss" class="col-sm-12 col-form-label" id="lblFunds"></label>
+                </div>
+              </div>
 
+              <div class="m-3 row">
                 <button type="button" id="btnQuantity" class="btn btn-warning display-1" style="min-height: 75px;">
                   <h4 class="display-5" id="lblQuantity">0</h4>
                 </button>
