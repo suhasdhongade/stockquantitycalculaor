@@ -28,7 +28,34 @@
   </style>
   <script>
     $(document).ready(function () {
+
+      $('#tblStockList').on('click', 'button', function () {
+        var par = $(this).parent().parent();
+        par.remove();
+      });
+
+
       $("#btnQuantity").click(function (ev) {
+
+        var stockName = $("#txtStockName").val();
+        var riskPerTrade = $("#txtRiskPerTrade").val();
+        var stockPrice = $("#txtStockPrice").val();
+        var stoplossPrice = $("#txtStoploss").val();
+        var quantity = $("#lblQuantity").text();
+
+        if (stockName != "" && riskPerTrade != "" && stockPrice != "" && stoplossPrice != "" && quantity !=
+          "") {
+          var row = "<tr>"
+          row = row + "<td>" + stockName + "</td>";
+          row = row + "<td>" + riskPerTrade + "</td>";
+          row = row + "<td>" + stockPrice + "</td>";
+          row = row + "<td>" + stoplossPrice + "</td>";
+          row = row + "<td>" + quantity + "</td>";
+          row = row + "<td> <button type='button' class='btn btn-danger btnDelete' >X</button> </td>";
+          row = row + "</tr>"
+          $('#tblStockList').append(row);
+        }
+
         copyToClipboard('#lblQuantity');
         tippy('#btnQuantity', {
           content: 'Quantity Copied!',
@@ -41,6 +68,17 @@
             }, 1000);
           }
         });
+
+        $("#txtStockName").val("");
+        $("#txtRiskPerTrade").val("");
+        $("#txtStockPrice").val("");
+        $("#txtStoploss").val("");
+        $("#lblQuantity").text("");
+        $("#lblStocklossDiff").text("");
+        $("#lblFunds").text("");
+
+
+
       });
 
       function copyToClipboard(element) {
@@ -149,7 +187,19 @@
   <div class="d-flex p-2">
     <div class="container align-middle">
       <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-6">
+          <table id="tblStockList" class="table table-light">
+            <tr>
+              <th>
+                Stock
+              </th>
+              <th>Risk</th>
+              <th>Price Stock</th>
+              <th>Stop Loss</th>
+              <th>Quantity</th>
+              <th></th>
+            </tr>
+          </table>
         </div>
         <div class="col-md-6">
           <div class="card">
@@ -158,6 +208,12 @@
               Stock Quantity Calculator
             </div>
             <div class="card-body">
+              <div class="m-3 row">
+                <label for="inputPassword" class="col-sm-4 col-form-label">Stock</label>
+                <div class="col-sm-8">
+                  <input type="text" class="form-control" id="txtStockName" placeholder="Stock Name">
+                </div>
+              </div>
               <div class="m-3 row">
                 <label for="inputPassword" class="col-sm-4 col-form-label">Risk / Trade</label>
                 <div class="col-sm-8">
