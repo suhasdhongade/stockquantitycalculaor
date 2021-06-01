@@ -68,14 +68,6 @@
             }, 1000);
           }
         });
-
-        $("#txtStockName").val("");
-        $("#txtRiskPerTrade").val("");
-        $("#txtStockPrice").val("");
-        $("#txtStoploss").val("");
-        $("#lblQuantity").text("");
-        $("#lblStocklossDiff").text("");
-        $("#lblFunds").text("");
       });
 
       function copyToClipboard(element) {
@@ -184,20 +176,7 @@
   <div class="d-flex p-2">
     <div class="container align-middle">
       <div class="row">
-        <div class="col-md-6">
-          <table id="tblStockList" class="table table-light">
-            <tr>
-              <th>
-                Stock
-              </th>
-              <th>Risk</th>
-              <th>Price Stock</th>
-              <th>Stop Loss</th>
-              <th>Quantity</th>
-              <th></th>
-            </tr>
-          </table>
-        </div>
+
         <div class="col-md-6">
           <div class="card">
             <div class="card-header">
@@ -284,6 +263,20 @@
               </div>
             </div>
           </div>
+        </div>
+        <div class="col-md-6">
+          <table id="tblStockList" class="table table-light">
+            <tr>
+              <th>
+                Stock
+              </th>
+              <th>Risk</th>
+              <th>Price Stock</th>
+              <th>Stop Loss</th>
+              <th>Quantity</th>
+              <th></th>
+            </tr>
+          </table>
         </div>
       </div>
 
